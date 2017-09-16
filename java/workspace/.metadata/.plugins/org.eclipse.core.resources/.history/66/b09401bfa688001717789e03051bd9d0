@@ -1,0 +1,148 @@
+package randomOpenAv;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
+import javax.swing.text.DefaultCaret;
+
+public class GUIandDelegate extends JFrame implements ActionListener {
+	private Container containerbottom;
+	private JPanel container;
+	private JLabel title, imageLabel;
+	private JTextField pathText;
+	private JButton lookPath, Search, wathchMovie;
+	private JTextArea processINFOText;
+	private ImageIcon image;
+
+	String fileName, filePath;
+	static int allDicCount;
+	static Integer finishedDicCount = 0;
+	String[] choiceCompany;
+
+	FileProcess fileprocess;
+
+	public GUIandDelegate() {
+		super("今天想看些甚麼?");
+
+		//setResizable(false);
+
+		containerbottom = getContentPane();
+		containerbottom.setLayout(new BorderLayout());
+
+		container = new JPanel();
+		container.setLayout(new FlowLayout());
+		container.setPreferredSize(new Dimension(800, 75));
+		container.setMaximumSize(new Dimension(800, 75));
+
+		title = new JLabel("選擇目錄:");
+		container.add(title);
+		pathText = new JTextField(25);
+		pathText.setEditable(false);
+		pathText.setText("G:\\藏\\JULIA");
+		container.add(pathText);
+		lookPath = new JButton("瀏覽");
+		container.add(lookPath);
+		Search = new JButton("尋找");
+		container.add(Search);
+		wathchMovie = new JButton("觀看");
+		container.add(wathchMovie);
+		
+		imageLabel = new JLabel("");
+		imageLabel.setBounds(0,0,800,800);
+		
+  	  	containerbottom.add(imageLabel, BorderLayout.CENTER);
+
+		containerbottom.add(container, BorderLayout.NORTH);
+
+		// 設定可滑動JTextArea
+		processINFOText = new JTextArea("請選擇目錄並按下整理...\n");
+		Font font = new Font("Serif", 1, 16);
+		processINFOText.setFont(font);
+		processINFOText.setEditable(false);
+		// 設定JTextArea更新會拉到最底下
+		DefaultCaret caret = (DefaultCaret) processINFOText.getCaret();
+		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+		// 設定scroll只能垂直滑動
+		JScrollPane g = new JScrollPane(processINFOText);
+		g.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+		containerbottom.add(g, BorderLayout.WEST);
+
+		lookPath.addActionListener(this);
+		Search.addActionListener(this);
+		wathchMovie.addActionListener(this);
+
+		fileprocess = new FileProcess();
+
+		this.setLocation(500, 300);
+		setSize(900, 700);
+		setVisible(true);
+
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// TODO Auto-generated method stub
+		if (arg0.getSource() == lookPath) {
+			JFileChooser chooser;
+			if (pathText.getText() != "") {
+				chooser = new JFileChooser(pathText.getText());
+			} else {
+				chooser = new JFileChooser();
+			}
+			chooser.setMultiSelectionEnabled(false);
+			chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			if (chooser.showOpenDialog(getContentPane()) == JFileChooser.APPROVE_OPTION) {
+				pathText.setText(chooser.getSelectedFile().getAbsolutePath());
+				System.out.println(pathText.getText());
+			}
+
+			File pathFile = new File(pathText.getText());
+			fileprocess.getFiles(pathFile, true, ".mp4", true);
+
+		} else if (arg0.getSource() == Search) {
+			fileprocess.randomSelectMovie();
+
+			Image picture = fileprocess.openPhoto();
+
+			if (picture != null) {
+				System.out.println("Image Load Finish");
+				SwingUtilities.invokeLater(new Runnable(){
+			      public void run(){
+			    	  System.out.println(imageLabel.getWidth());
+			    	  Image resizeImage = picture.getScaledInstance(imageLabel.getWidth(), imageLabel.getHeight(), Image.SCALE_SMOOTH);
+			    	  image = new ImageIcon(resizeImage);
+			    	 
+			    	  imageLabel.setIcon(image);
+			      }
+			    });
+			}
+		} else if (arg0.getSource() == wathchMovie) {
+
+		}
+	}
+}

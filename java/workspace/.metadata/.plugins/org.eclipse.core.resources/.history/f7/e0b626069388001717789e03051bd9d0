@@ -1,0 +1,310 @@
+package randomOpenAv;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
+public class CheckPanel extends JPanel implements ItemListener,ActionListener{
+	JCheckBox s1,PRESTIGE,Moodyz,EBODY,Kawaii,SOD,other,all,expansion;
+	JButton expansionTxt;
+	ArrayList<String> search = new ArrayList<String>();
+	ArrayList<String> exList = new ArrayList<String>();
+//	  s1:(snis,soe)
+//	  PRESTIGE:(abp,chn,,bgn)
+//	  Moodyz:(midd、mide、miad、migd、mimk)
+//	  EBODY:(ebod、eyan)
+//	  Kawaii:(kawd、kwbd)
+//	  SOD:(star,sdab,sdmu,dandy)
+//    Other:(tek,avop,ipz,apak,pppd,dvaj,team)
+//    expansion:可由txt檔輸入新的番號類別
+	CheckPanel() {
+		s1 = new JCheckBox("s1");
+		PRESTIGE = new JCheckBox("PRESTIGE");
+		Moodyz = new JCheckBox("Moodyz");
+		EBODY = new JCheckBox("EBODY");
+		Kawaii = new JCheckBox("Kawaii");
+		SOD = new JCheckBox("SOD");
+		other = new JCheckBox("Other");
+		all = new JCheckBox("All");
+		expansion = new JCheckBox("expansion");
+		expansionTxt= new JButton("選擇外部txt增加可解析番號數量");
+		
+        s1.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange() == ItemEvent.SELECTED) {
+                	search.add("snis");
+                	search.add("soe");
+                } else {
+                	search.remove("snis");
+                	search.remove("soe");
+                };
+            }
+        });
+        
+        PRESTIGE.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange() == ItemEvent.SELECTED) {
+                	search.add("abp");
+                	search.add("chn");
+                	search.add("bgn");
+                } else {
+                	search.remove("abp");
+                	search.remove("chn");
+                	search.remove("bgn");
+                };
+            }
+        });
+        Moodyz.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange() == ItemEvent.SELECTED) {
+                	search.add("midd");
+                	search.add("mide");
+                	search.add("miad");
+                	search.add("migd");
+                	search.add("mimk");
+                } else {
+                	search.remove("midd");
+                	search.remove("mide");
+                	search.remove("miad");
+                	search.remove("migd");
+                	search.remove("mimk");
+                };
+            }
+        });
+        EBODY.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange() == ItemEvent.SELECTED) {
+                	search.add("ebod");
+                	search.add("eyan");
+                } else {
+                	search.remove("ebod");
+                	search.remove("eyan");
+                };
+            }
+        });
+        
+
+        Kawaii.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange() == ItemEvent.SELECTED) {
+                	search.add("kawd");
+                	search.add("kwbd");
+                } else {
+                	search.remove("kawd");
+                	search.remove("kwbd");
+                };
+            }
+        });
+        SOD.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange() == ItemEvent.SELECTED) {
+                	search.add("star");
+                	search.add("sdab");
+                	search.add("sdmu");
+                	search.add("dandy");
+                } else {
+                	search.remove("star");
+                	search.remove("sdab");
+                	search.remove("sdmu");
+                	search.remove("dandy");
+                };
+            }
+        });
+        
+        other.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange() == ItemEvent.SELECTED) {
+                	search.add("pppd");
+                	search.add("tek");
+                	search.add("avop");
+                	search.add("ipz");
+                	search.add("apak");
+                	search.add("pppd");
+                	search.add("dvaj");
+                	search.add("team");
+                	
+                	
+                } else {
+                	search.remove("avop");
+                	search.remove("pppd");
+                	search.remove("tek");
+                	search.remove("ipz");
+                	search.remove("apak");
+                	search.remove("pppd");
+                	search.remove("dvaj");
+                	search.remove("team");
+                };
+            }
+        });
+        
+
+        all.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange() == ItemEvent.SELECTED) {
+                	search.clear();
+                	
+                	s1.setEnabled(false);
+                	s1.setSelected(true);
+                	
+                	PRESTIGE.setEnabled(false);
+                	PRESTIGE.setSelected(true);
+                	
+                	Moodyz.setEnabled(false);
+                	Moodyz.setSelected(true);
+                	
+                	EBODY.setEnabled(false);
+                	EBODY.setSelected(true);
+                	
+                	Kawaii.setEnabled(false);
+                	Kawaii.setSelected(true);
+                	
+                	SOD.setEnabled(false);
+                	SOD.setSelected(true);
+                	
+                	other.setEnabled(false);
+                	other.setSelected(true);
+                	
+                } else {
+                	s1.setEnabled(true);
+                	s1.setSelected(false);
+                	
+                	PRESTIGE.setEnabled(true);
+                	PRESTIGE.setSelected(false);
+                	
+                	Moodyz.setEnabled(true);
+                	Moodyz.setSelected(false);
+                	
+                	EBODY.setEnabled(true);
+                	EBODY.setSelected(false);
+
+                	Kawaii.setEnabled(true);
+                	Kawaii.setSelected(false);
+                	
+                	SOD.setEnabled(true);
+                	SOD.setSelected(false);
+                	
+                	other.setEnabled(true);
+                	other.setSelected(false);
+                	
+                	search.clear();
+                };
+            }
+        });
+        
+        expansion.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange() == ItemEvent.SELECTED) {
+                	if (!exList.isEmpty()){
+                       	search.addAll(exList);
+                       	System.out.println(search);
+                	}else{
+                		JOptionPane.showMessageDialog(null, "外部資料為空或格式不正確");
+                		expansion.setSelected(false);
+                	}
+                } else {
+                	search.removeAll(exList);
+                	System.out.println(search);
+                	//addAll(exList);
+                };
+            }
+        });
+        
+        expansionTxt.addActionListener(this);
+
+		
+		add(s1);
+		add(PRESTIGE);
+		add(Moodyz);
+		add(EBODY);
+		add(Kawaii);
+		add(SOD);
+		add(other);
+		add(all);
+		add(expansion);
+		add(expansionTxt);
+		
+		all.setSelected(true);
+	}
+	@Override
+	public void itemStateChanged(ItemEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		search.removeAll(exList);
+		exList.clear();
+		
+		String nowDicPath = System.getProperty("user.dir") ;
+		String txtPath = "";
+		BufferedReader reader = null;
+		System.out.println(nowDicPath);
+		File folder = new File(nowDicPath);
+		JFileChooser chooser;
+
+		chooser = new JFileChooser(nowDicPath);
+		
+		chooser.setMultiSelectionEnabled(false);
+		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+			txtPath = chooser.getSelectedFile().getAbsolutePath();
+			System.out.println(txtPath);
+		}
+		
+		File encyptFile=new File(txtPath);
+		try {
+			reader = new BufferedReader(new FileReader(encyptFile));
+			String text = null;
+
+				while ((text = reader.readLine()) != null) {
+					exList.add(text);
+				}
+
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}finally {
+		    try {
+		        if (reader != null) {
+		            reader.close();
+		        }
+		    } catch (IOException e2) {
+		    	
+		    }
+		}
+
+		System.out.println(exList);
+
+		
+	}
+
+	
+}
+

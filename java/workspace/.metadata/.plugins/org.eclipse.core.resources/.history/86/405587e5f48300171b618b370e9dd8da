@@ -1,0 +1,48 @@
+import java.util.Random;
+
+public class GuessNumberBrain {
+	int ans = 0;
+	Random ran = new Random();
+	
+	void startnewGame() {
+		ans = ran.nextInt(10000);
+		System.out.println("遊戲開始 本局答案為:"+ans);
+		
+		
+	}
+	
+	void userGuess(String userGuessNumber) {
+		
+		if (userGuessNumber.length() == 4) {
+			int A = 0, B = 0;
+
+			char[] tempFromUser = userGuessNumber.toCharArray();
+			char[] tempFromAns = Integer.toString(ans).toCharArray();
+
+			for (int i = 0; i < tempFromUser.length; i++) {
+				for (int j = 0; j < tempFromAns.length; j++) {
+					if (tempFromUser[i] == tempFromAns[j] && i == j) {
+						A++;
+						break;
+					} else if (tempFromUser[i] == tempFromAns[j]) {
+						B++;
+					}
+				}
+			}
+
+			System.out.println(A + "A" + B + "B");
+
+			if (A == 4) {
+				System.out.println("恭喜您答對!!!");
+				System.out.println("本局答案為:"+ans);
+			}
+		}else {
+			System.out.println("請輸入4位數");
+		}
+		
+	}
+	
+	void guessResult() {
+		
+	}
+}

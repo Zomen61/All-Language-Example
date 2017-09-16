@@ -1,0 +1,25 @@
+import java.util.Scanner;
+
+public class main {
+	public static void main(String[] arg) {
+		String temp ="";
+		
+		Scanner scanner = new Scanner(System.in);
+		GuessNumberBrain gameBrain = new GuessNumberBrain();
+		
+		gameBrain.startnewGame();
+		
+		while(true) {
+			System.out.println("輸入restart可重新遊戲");
+			System.out.print("請輸入四位數字：");
+			temp = scanner.nextLine();
+			
+			if(temp.equals("restart")) {
+				gameBrain.startnewGame();
+			}else {
+				gameBrain.userGuess(temp);
+			}
+		}
+		
+	}
+}

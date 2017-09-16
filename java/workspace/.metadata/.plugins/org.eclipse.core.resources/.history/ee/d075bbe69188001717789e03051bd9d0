@@ -1,0 +1,154 @@
+package randomOpenAv;
+
+import java.io.File;
+import java.io.IOException;
+
+public class FileProcess {
+
+	FileProcess(){
+		
+	}
+
+	public String[] getFileList(String folderPath,String[] companylist) {
+		String[] list = null;
+		System.out.println("讀檔案目錄");
+		try {
+			File folder = new File(folderPath);
+			File[] subAll = folder.listFiles();
+			int count = 0;
+			for (int i = 0; i < subAll.length; i++) {
+				if (subAll[i].isDirectory()) {
+					for(String one:companylist){
+						if (subAll[i].getName().indexOf(one) != -1) {
+							count++;
+							break;
+						} else {
+							//System.out.println("'" + subAll[i].getName() + "'" + "此資料夾格式不正確");
+						}
+					}
+				}
+			}
+			list = new String[count];
+			count = 0;
+			for (int i = 0; i < subAll.length; i++) {
+				if (subAll[i].isDirectory()) {
+					for (String one : companylist) {
+						if (subAll[i].getName().indexOf(one) != -1) {
+							list[count] = subAll[i].getName();
+							count++;
+							break;
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			System.out.println("此目錄讀檔失敗:'" + folderPath);
+			System.out.println("原因:" + e.getMessage());
+		}
+
+		return list;
+	}
+
+	 public void fileNameFormat(String folderPath,String[] companylist){
+		System.out.println("開始格式化");
+		try {
+			File folder = new File(folderPath);
+			File[] subAll = folder.listFiles();
+			int count = 0;
+			for (int i = 0; i < subAll.length; i++) {
+				if (subAll[i].isDirectory()) {
+					count++;
+				}
+			}
+			String[] list = new String[count];
+			String[] renameList = new String[count];
+			Boolean[] needRename = new Boolean[count];
+			count = 0;
+			for (int i = 0; i < subAll.length; i++) {
+				if (subAll[i].isDirectory()) {
+					list[count] = subAll[i].getName();
+					renameList[count] = subAll[i].getName();
+					needRename[count] = false;
+					count++;
+				}
+			}
+			
+			for (int i = 0; i < list.length; i++) {
+
+				int index = 0;
+				renameList[i] = renameList[i].trim();
+				renameList[i] = renameList[i].replaceAll("[^a-zA-Z0-9]", "");
+				renameList[i] = renameList[i].toLowerCase();
+
+				for (String one : companylist) {
+					index = renameList[i].indexOf(one);
+					if (index != -1) {
+						if (index != 0) {
+							String temp = renameList[i].substring(index, renameList[i].length());
+							renameList[i] = temp;
+						}
+						renameList[i] = renameList[i].substring(0, one.length()+3);
+						needRename[i] = true;
+						break;
+					} else {
+						//System.out.println("此廠商格式沒有支援");
+					}
+				}
+			}
+			
+			for(int j = 0 ;j <list.length;j++){
+				if (needRename[j]) {
+					String SouFileAddr = folderPath + "//" + list[j];
+					String DstFileAddr = folderPath + "//" + renameList[j];
+					renameDirectory(SouFileAddr, DstFileAddr);
+				}
+			}
+			
+		} catch (Exception e) {
+			//System.out.println(e);
+			System.out.println("格式化錯誤:" + folderPath + "'");
+			System.out.println("原因:" + e.getMessage());
+		}
+	 }
+
+	public void renameDirectory(String fromDir, String toDir) throws IOException {
+
+		File from = new File(fromDir);
+		if (!from.exists() || !from.isDirectory()) {
+			System.out.println("Directory does not exist: " + fromDir);
+			return;
+		}
+
+		File to = new File(toDir);
+		// Rename
+		if (from.renameTo(to)) {
+			System.out.println("Success!");
+		} else {
+			System.out.println("Error");
+		}
+	}
+	
+	public String[][] fileNamesplit(String[] dicList,String[] companylist) {
+		String[][] returnTemp = new String[dicList.length][2];
+		int i = 0;
+		int index = 0;
+		
+		for (String dicName : dicList) {
+			for (String one : companylist) {
+				index = dicName.indexOf(one);
+				if (index != -1) {
+					String[] temp = new String[2];
+					temp[0] = dicName.substring(0, one.length());
+					temp[1] = dicName.substring(one.length());
+					returnTemp[i] = temp;
+					break;
+				} else {
+					String[] temp = new String[2];
+					returnTemp[i] = temp;
+				}
+			}
+			i++;
+		}
+		return returnTemp;
+	}
+}

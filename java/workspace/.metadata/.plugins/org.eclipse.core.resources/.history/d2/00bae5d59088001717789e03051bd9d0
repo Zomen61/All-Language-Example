@@ -1,0 +1,7 @@
+package randomOpenAv;
+
+public class mainPromgram {
+	public static void main(String[] arg) {
+		
+	}
+}

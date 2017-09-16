@@ -1,0 +1,13 @@
+package randomOpenAv;
+
+import javax.swing.WindowConstants;
+
+public class mainPromgram {
+	public static void main(String[] arg) {
+		GUIandDelegate application = new GUIandDelegate();
+	    application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+	    
+	    FileProcess a = new FileProcess();
+	    a.openMovie("G:\\藏\\JULIA\\0419-pppd458FHD");
+	}
+}

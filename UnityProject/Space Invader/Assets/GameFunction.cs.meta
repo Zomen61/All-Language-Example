@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: bd3c678f42db4e740b9cee537c401d1b
+timeCreated: 1496809620
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - Emeny: {fileID: 1512626248608680, guid: e42a7aba4938255439b7946fb747c45b, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

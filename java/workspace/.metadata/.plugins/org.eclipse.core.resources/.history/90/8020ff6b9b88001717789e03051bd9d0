@@ -1,0 +1,50 @@
+package randomOpenAv;
+
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.IOException;
+
+public class FileProcess {
+
+	FileProcess(){
+		
+	}
+
+	public String[] getFileList(String folderPath) {
+		String[] list = null;
+		System.out.println("讀檔案目錄");
+		try {
+			File folder = new File(folderPath);
+			
+			FileFilter directoryFilter = new FileFilter() {
+				public boolean accept(File file) {
+					return file.isDirectory();
+				}
+			};
+			
+			File[] listDirectoty = folder.listFiles(directoryFilter);
+			list = new String[listDirectoty.length];
+
+			for(int i = 0;i < listDirectoty.length;i++) {
+				list[i] = listDirectoty[i].toString();
+			}
+
+		} catch (Exception e) {
+			System.out.println("此目錄讀檔失敗:'" + folderPath);
+			System.out.println("原因:" + e.getMessage());
+		}
+		return list;
+	}
+	
+	public void openMovie(String filePath){
+		File movieFile = new File(filePath);
+		try {
+			Desktop.getDesktop().open(movieFile);
+		}catch(Exception e) {
+			System.out.println("此開啟影片失敗");
+			System.out.println("原因:" + e.getMessage());
+		}
+		
+	}
+}

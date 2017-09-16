@@ -1,0 +1,58 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.WindowConstants;
+
+public class FormatFileDirectory extends JFrame implements ActionListener{
+	private JLabel title, example;
+	private JTextField pathText;
+	private JButton lookPath,Format;
+	
+	FormatFileDirectory(){
+		super("將影片都放入資料夾中");
+		
+		title = new JLabel("選擇要整理的目錄:");
+		add(title);
+		pathText = new JTextField(25);
+		pathText.setEditable(false);
+		add(pathText);
+		example = new JLabel("例:D:/新資料夾");
+		add(example);
+		lookPath = new JButton("瀏覽");
+		add(lookPath);
+		Format = new JButton("整理");
+		add(Format);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == lookPath) {
+			JFileChooser chooser;
+			if (pathText.getText() != "") {
+				chooser = new JFileChooser(pathText.getText());
+			} else {
+				chooser = new JFileChooser();
+			}
+			chooser.setMultiSelectionEnabled(false);
+			chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			if (chooser.showOpenDialog(getContentPane()) == JFileChooser.APPROVE_OPTION) {
+				pathText.setText(chooser.getSelectedFile().getAbsolutePath());
+				System.out.println(pathText.getText());
+			}
+
+		} else if (e.getSource() == Format) {
+			FileProcess fileprocess = new FileProcess();
+			File fileDir = new File(pathText.getText());
+			String[] list = fileprocess.getFiles(fileDir, false, ".mp4", true);
+			fileprocess.createDirectory(fileDir);
+			
+		}
+		
+	}
+}

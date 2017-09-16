@@ -1,0 +1,62 @@
+package randomOpenAv;
+
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
+
+public class FileProcess {
+
+	FileProcess(){
+		
+	}
+
+	public String[] getFileList(String folderPath,String[] companylist) {
+		String[] list = null;
+		System.out.println("讀檔案目錄");
+		try {
+			File folder = new File(folderPath);
+			File[] subAll = folder.listFiles();
+			int count = 0;
+			for (int i = 0; i < subAll.length; i++) {
+				if (subAll[i].isDirectory()) {
+					for(String one:companylist){
+						if (subAll[i].getName().indexOf(one) != -1) {
+							count++;
+							break;
+						} else {
+							//System.out.println("'" + subAll[i].getName() + "'" + "此資料夾格式不正確");
+						}
+					}
+				}
+			}
+			list = new String[count];
+			count = 0;
+			for (int i = 0; i < subAll.length; i++) {
+				if (subAll[i].isDirectory()) {
+					for (String one : companylist) {
+						if (subAll[i].getName().indexOf(one) != -1) {
+							list[count] = subAll[i].getName();
+							count++;
+							break;
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			System.out.println("此目錄讀檔失敗:'" + folderPath);
+			System.out.println("原因:" + e.getMessage());
+		}
+		return list;
+	}
+	
+	public void openMovie(String filePath){
+		File movieFile = new File(filePath);
+		try {
+			Desktop.getDesktop().open(movieFile);
+		}catch(Exception e) {
+			System.out.println("此開啟影片失敗");
+			System.out.println("原因:" + e.getMessage());
+		}
+		
+	}
+}

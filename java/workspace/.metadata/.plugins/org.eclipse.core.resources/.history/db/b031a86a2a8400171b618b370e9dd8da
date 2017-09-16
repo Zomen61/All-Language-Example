@@ -1,0 +1,77 @@
+import java.util.Random;
+
+public class GuessNumberBrain {
+	int ans = 0;
+	Random ran = new Random();
+	char[] tempFromAns;
+	
+	
+	void startnewGame() {
+		ans = ran.nextInt(10000);
+		tempFromAns = Integer.toString(ans).toCharArray();
+		if(tempFromAns.length < 4) {
+			char[] temp = new char[4];
+			int moveToPos = temp.length - tempFromAns.length;
+			for(int i = 0; i < temp.length; i++) {
+				if(i >= moveToPos) {
+					temp[i] = tempFromAns[i - moveToPos];
+				}else {
+					temp[i] = '0';
+				}
+			}
+			tempFromAns = temp;
+		}
+		
+		System.out.println("遊戲開始");
+//		for(char everyone: tempFromAns) {
+//			System.out.print(everyone);
+//		}
+//		System.out.println("");
+	}
+	
+	void userGuess(String userGuessNumber) {
+		
+		if (userGuessNumber.length() == 4) {
+			int A = 0, B = 0,tempA = 0 ,tempB = 0,count = 0;
+			char[] tempFromUser = userGuessNumber.toCharArray();
+			int[] nextpos = new int[10];
+			
+			for (int i = 0; i < tempFromAns.length; i++) {
+				for (int j = nextpos[Character.getNumericValue(tempFromAns[i])]; j < tempFromUser.length; j++) {
+					if (tempFromUser[j] == tempFromAns[i] && i == j) {
+						tempA++;
+						nextpos[Character.getNumericValue(tempFromAns[i])]++;
+						break;
+					} else if (tempFromUser[j] == tempFromAns[i]) {
+						tempB++;
+					}else {
+						
+					}
+				}
+				
+				if (tempA !=0) {
+					A++;
+				}else if (tempA ==0 && tempB != 0){
+					B++;
+				}
+				tempA = 0;
+				tempB = 0;
+			}
+
+
+			System.out.println(A + "A" + B + "B");
+
+			if (A == 4) {
+				System.out.println("恭喜您答對!!!");
+				System.out.println("本局答案為:"+ans);
+			}
+		}else {
+			System.out.println("請輸入4位數");
+		}
+		
+	}
+	
+	void guessResult() {
+		
+	}
+}
